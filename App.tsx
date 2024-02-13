@@ -25,7 +25,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import IntroScreen from './src/screens/IntroScreen';
+import IntroScreen from './src/screens/LandingScreen';
 
 type SectionProps = PropsWithChildren<{
   title: string;
