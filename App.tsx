@@ -25,7 +25,9 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import IntroScreen from './src/screens/LandingScreen';
+import LandingScreen from './src/screens/LandingScreen';
+import SignupScreen from './src/screens/SignupScreen';
+import LoginScreen from './src/screens/LoginScreen';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -59,7 +61,7 @@ function Section({children, title}: SectionProps): React.JSX.Element {
 
 function App(): React.JSX.Element {
   return (
-    <IntroScreen/>
+    <LoginScreen/>
   )
   // const isDarkMode = useColorScheme() === 'dark';
 

@@ -13,7 +13,7 @@ const MealTrackerScreen = () => {
       <View style={styles.card}>
 
         <View style={styles.imageContainer}>
-          <Image source={require('../assets/intro-food-image.png')} style={styles.image} />
+          <Image source={require('../assets/landing-food-image.png')} style={styles.image} />
         </View>
 
         <Text style={styles.title}>Sync your food and health</Text>
