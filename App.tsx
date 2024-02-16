@@ -33,6 +33,8 @@ import LoginScreen from './src/screens/LoginScreen';
 import MealCard from './src/components/MealCard';
 import DiaryScreen from './src/screens/DiaryScreen';
 import TabNavigator from './src/navigation/TabNavigator';
+import FavoriteMealCard from './src/components/FavoriteMealCard';
+import FavoriteMealsScreen from './src/screens/FavoriteMealsScreen';
 
 type SectionProps = PropsWithChildren<{
   title: string;

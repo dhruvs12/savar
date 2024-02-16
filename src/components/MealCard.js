@@ -4,14 +4,17 @@ import { View, Text, StyleSheet } from 'react-native';
 const MealCard = ({ mealType, mealName, mealTime, calories }) => {
   return (
     <View style={styles.cardContainer}>
+
       <View style={styles.cardHeader}>
         <Text style={styles.mealType}>{mealType}</Text>
         <Text style={styles.mealName}>{mealName}</Text>
       </View>
+
       <View style={styles.cardBody}>
         <Text style={styles.mealTime}>{mealTime}</Text>
         {calories && <Text style={styles.calories}>{calories} kcal</Text>}
       </View>
+      
     </View>
   );
 };
@@ -21,6 +24,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
     padding: 16,
+    margin: 8,
     shadowColor: '#000000',
     shadowOffset: {
       width: 0,
@@ -29,7 +33,6 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     shadowOpacity: 0.1,
     elevation: 3,
-    margin: 8,
   },
   cardHeader: {
     borderBottomColor: '#E2E2E2',

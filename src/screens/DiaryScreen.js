@@ -45,12 +45,19 @@ const data = [
   // ... more dates with meals
 ];
 
-const DiaryScreen = () => {
+const DiaryScreen = ({navigation}) => {
+
+  const handleNewEntryPressed = () => {
+    navigation.navigate('FavoriteMeals');
+  }
+
   return (
 
     <SafeAreaView style={styles.container}>
 
-      <Text style={styles.header}>Diary</Text>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Diary</Text>
+      </View>
       
       <ScrollView style={styles.scrollView}>
         {data.map((day) => (
@@ -69,7 +76,7 @@ const DiaryScreen = () => {
         ))}
       </ScrollView>
 
-      <TouchableOpacity style={styles.newEntryButton}>
+      <TouchableOpacity style={styles.newEntryButton} onPress={handleNewEntryPressed}>
         <Text style={styles.newEntryButtonText}>New Entry</Text>
       </TouchableOpacity>
 
@@ -80,16 +87,22 @@ const DiaryScreen = () => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff', // Set a white background
+      backgroundColor: '#fff',
     },
     header: {
-      fontSize: 30,
+      padding: 15,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    headerTitle: {
       fontWeight: 'bold',
-      textAlign: 'center',
-      marginVertical: 20,
+      fontSize: 20,
+    },
+    scrollView: {
+      padding: 0,
     },
     date: {
-      fontSize: 25,
+      fontSize: 20,
       fontWeight: 'bold',
       textAlign: 'left',
       marginBottom: 5,
@@ -105,7 +118,7 @@ const styles = StyleSheet.create({
       paddingVertical: 10,
       paddingHorizontal: 20,
       elevation: 3,
-      shadowColor: '#000', // Below are shadow properties for iOS
+      shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.25,
       shadowRadius: 3.84
