@@ -25,9 +25,14 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import { NavigationContainer } from '@react-navigation/native';
+
 import LandingScreen from './src/screens/LandingScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import LoginScreen from './src/screens/LoginScreen';
+import MealCard from './src/components/MealCard';
+import DiaryScreen from './src/screens/DiaryScreen';
+import TabNavigator from './src/navigation/TabNavigator';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -61,7 +66,15 @@ function Section({children, title}: SectionProps): React.JSX.Element {
 
 function App(): React.JSX.Element {
   return (
-    <LoginScreen/>
+    // <LandingScreen/>
+    // <SignupScreen/>
+    // <LoginScreen/>
+    // <DiaryScreen/>
+
+    <NavigationContainer>
+      <TabNavigator />
+    </NavigationContainer>
+
   )
   // const isDarkMode = useColorScheme() === 'dark';
 
