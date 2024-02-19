@@ -1,11 +1,8 @@
 import React from 'react';
-import { TextInput, StyleSheet, Dimensions} from 'react-native';
-
-const screenWidth = Dimensions.get('window').width;
+import { TextInput, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  Input: {
-    width: screenWidth - 60,
+  input: {
     height: 40,
     paddingHorizontal: 10,
     borderRadius: 25,
@@ -21,17 +18,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const defaultProps = {
-  text: 'input',
-};
-
-const InputField = (props) => {
+const InputField = ({ style, text, ...rest }) => {
   return (
     <TextInput
-      style={styles.Input}
-      placeholder={props.text || defaultProps.text}
-      placeholderTextColor="#8b8b8b" // React Native uses `placeholderTextColor` for placeholder color
-      // Add more props that you need for the TextInput
+      style={[styles.input, style]}
+      placeholder={text}
+      placeholderTextColor="#8b8b8b"
+      {...rest}
     />
   );
 };

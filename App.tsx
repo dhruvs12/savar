@@ -35,6 +35,7 @@ import DiaryScreen from './src/screens/DiaryScreen';
 import TabNavigator from './src/navigation/TabNavigator';
 import FavoriteMealCard from './src/components/FavoriteMealCard';
 import FavoriteMealsScreen from './src/screens/FavoriteMealsScreen';
+import NewMealScreen from './src/screens/NewMealScreen';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -73,9 +74,11 @@ function App(): React.JSX.Element {
     // <LoginScreen/>
     // <DiaryScreen/>
 
-    <NavigationContainer>
-      <TabNavigator />
-    </NavigationContainer>
+    <NewMealScreen />
+
+    // <NavigationContainer>
+    //   <TabNavigator />
+    // </NavigationContainer>
 
   )
   // const isDarkMode = useColorScheme() === 'dark';
