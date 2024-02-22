@@ -2,10 +2,10 @@ import React from 'react';
 import { SafeAreaView, View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import FavoriteMealCard from '../components/FavoriteMealCard';
 
-const FavoriteMealsScreen = () => {
-  // This function would handle the creation of a new meal entry
+const FavoriteMealsScreen = ({navigation}) => {
+  
   const handleCreateNewMeal = () => {
-    // Navigation or state update logic goes here
+    navigation.navigate('NewMeals');
   };
 
   // Example data - replace this with your actual data fetching mechanism

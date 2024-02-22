@@ -1,9 +1,9 @@
 import React from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
-import MealCard from '../components/MealCard'; // import the MealCard component we created earlier
+import MealCard from '../components/MealCard';
 
-// Example data structure for multiple dates
-const data = [
+// Sample Data
+const sampleData = [
   {
     date: '02/10/24',
     meals: [
@@ -42,12 +42,11 @@ const data = [
       }
     ],
   }
-  // ... more dates with meals
 ];
 
 const DiaryScreen = ({navigation}) => {
 
-  const handleNewEntryPressed = () => {
+  const onNewEntryPress = () => {
     navigation.navigate('FavoriteMeals');
   }
 
@@ -58,9 +57,9 @@ const DiaryScreen = ({navigation}) => {
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Diary</Text>
       </View>
-      
+
       <ScrollView style={styles.scrollView}>
-        {data.map((day) => (
+        {sampleData.map((day) => (
           <View key={day.date}>
             <Text style={styles.date}>{day.date}</Text>
             {day.meals.map((meal) => (
@@ -76,7 +75,7 @@ const DiaryScreen = ({navigation}) => {
         ))}
       </ScrollView>
 
-      <TouchableOpacity style={styles.newEntryButton} onPress={handleNewEntryPressed}>
+      <TouchableOpacity style={styles.newEntryButton} onPress={onNewEntryPress}>
         <Text style={styles.newEntryButtonText}>New Entry</Text>
       </TouchableOpacity>
 

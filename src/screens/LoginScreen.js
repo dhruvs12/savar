@@ -24,8 +24,8 @@ const LoginScreen = () => {
       <Text style={styles.subheader}>Track your meals and improve your well-being!</Text>
 
       <View style={styles.inputContainer}>
-        <InputField text="Email" onChangeText={setEmail} value={email} />
-        <InputField text="Password" onChangeText={setPassword} value={password} secureTextEntry />
+        <InputField style={{width:'100%'}} text="Email" onChangeText={setEmail} value={email} />
+        <InputField style={{width:'100%'}} text="Password" onChangeText={setPassword} value={password} secureTextEntry />
       </View>
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>

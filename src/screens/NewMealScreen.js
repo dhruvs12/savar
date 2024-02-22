@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { DatePickerIOS, SafeAreaView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import InputField from '../components/InputField';
 
-const NewMealScreen = () => {
+const NewMealScreen = ({navigation}) => {
 
   const [date, setDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
@@ -30,18 +30,31 @@ const NewMealScreen = () => {
     }
   };
 
+  const handleAddFood = () => {
+  
+    console.log('Add Food Pressed with the following details:');
+    console.log('Date:', date);
+    console.log('Start Time:', startTime);
+    console.log('End Time:', endTime);
+
+    
+    navigation.navigate('SearchFood');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
 
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Favorite Meals</Text>
+        <Text style={styles.headerTitle}>New Meal</Text>
       </View>
 
       <View style={styles.inputContainer}>
-        <InputField text="New Meal" />
+        <InputField style={{width:'100%'}}text="New Meal" />
       </View>
 
-      <View style={styles.centeredContainer}>
+
+      <View style={styles.dateTimeContainer}>
+
         <DateTimePicker
           testID="datePicker"
           value={date}
@@ -49,40 +62,45 @@ const NewMealScreen = () => {
           display="default"
           onChange={onChangeDate}
         />
-      </View>
-
-      <View style={styles.timeContainer}>
+        <View style={styles.timeContainer}>
         <View style={[styles.timeBlock, styles.startBlock]}>
           <Text style={styles.timeLabel}>Start Time</Text>
-          <DateTimePicker
-              style={styles.timePicker}
+          <View style={styles.timePickerContainer}>
+            <DateTimePicker
+              style={{width:'200%'}}
               testID="startDateTimePicker"
               value={startTime}
               mode="time"
               is24Hour={true}
               onChange={onChangeStartTime}
-          />
+            />
+          </View>
         </View>
 
         <View style={[styles.timeBlock, styles.endBlock]}>
           <Text style={styles.timeLabel}>End Time</Text>
-          <DateTimePicker
+
+          <View style={styles.timePickerContainer}>
+            <DateTimePicker
+              style={styles.timePicker}
               testID="startDateTimePicker"
-              value={startTime}
+              value={endTime}
               mode="time"
               is24Hour={true}
               onChange={onChangeStartTime}
-          />
+            />
+          </View>
         </View>
       </View>
-
+      </View>
+      
       <View style={styles.mealTypeContainer}>
         <Text style={styles.mealTypeLabel}>Meal Type</Text>
         <InputField text="Meal Type" />
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.primaryButton}>
+        <TouchableOpacity style={styles.primaryButton} onPress={handleAddFood}>
           <Text style={styles.buttonText}>Add Food</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.secondaryButton}>
@@ -108,29 +126,33 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
   },
-  centeredContainer: {
+  inputContainer: {
+    marginRight:16,
+    marginLeft:16
+  },
+  dateTimeContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 30,
-    marginTop:16,
+    marginTop:32,
     marginBottom: 8,
-  },
-  inputContainer: {
-    paddingHorizontal: 30,
-    paddingVertical: 15,
+    // backgroundColor: 'yellow'
   },
   timeContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 30,
-    marginBottom: 16,
+    marginTop:16
   },
   timeBlock: {
-    flex: 1,
+    flexDirection: 'column',
     padding: 16,
-    // backgroundColor: 'blue',
     borderRadius: 10,
-    alignItems:'center'
+    alignItems:'center',
+    backgroundColor:'blue'
+  },
+  timePickerContainer: {
+    backgroundColor:'red',
+    alignItems:'stretch'
   },
   startBlock: {
     marginRight: 8,
@@ -160,7 +182,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   primaryButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#6200ee',
     borderRadius: 20,
     paddingVertical: 12,
     paddingHorizontal: 20,

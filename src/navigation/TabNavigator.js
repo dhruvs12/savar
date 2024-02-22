@@ -4,6 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DiaryScreen from '../screens/DiaryScreen';
 import FavoriteMealsScreen from '../screens/FavoriteMealsScreen';
+import NewMealScreen from '../screens/NewMealScreen';
+import SearchFoodScreen from '../screens/SearchFoodScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -14,6 +16,8 @@ function DiaryStackScreen() {
     <DiaryStack.Navigator screenOptions={{ headerShown: false }}>
       <DiaryStack.Screen name="Diary" component={DiaryScreen} />
       <DiaryStack.Screen name="FavoriteMeals" component={FavoriteMealsScreen} />  
+      <DiaryStack.Screen name="NewMeals" component={NewMealScreen} />  
+      <DiaryStack.Screen name="SearchFood" component={SearchFoodScreen} />
     </DiaryStack.Navigator>
   );
 }

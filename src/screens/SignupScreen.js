@@ -24,9 +24,9 @@ const SignupScreen = () => {
         <Text style={styles.header}>Create an Account</Text>
 
         <View style={styles.inputContainer}>
-            <InputField text="Username" onChangeText={setUsername} value={username} />
-            <InputField text="Password" onChangeText={setPassword} value={password} secureTextEntry />
-            <InputField text="Repeat Password" onChangeText={setRepeatPassword} value={repeatPassword} secureTextEntry />
+            <InputField style={{width:'100%'}} text="Username" onChangeText={setUsername} value={username} />
+            <InputField style={{width:'100%'}} text="Password" onChangeText={setPassword} value={password} secureTextEntry />
+            <InputField style={{width:'100%'}} text="Repeat Password" onChangeText={setRepeatPassword} value={repeatPassword} secureTextEntry />
         </View>
 
       <TouchableOpacity style={styles.button} onPress={handleSignup}>

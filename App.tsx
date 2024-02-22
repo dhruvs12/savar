@@ -36,6 +36,7 @@ import TabNavigator from './src/navigation/TabNavigator';
 import FavoriteMealCard from './src/components/FavoriteMealCard';
 import FavoriteMealsScreen from './src/screens/FavoriteMealsScreen';
 import NewMealScreen from './src/screens/NewMealScreen';
+import SearchFoodScreen from './src/screens/SearchFoodScreen';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -72,13 +73,10 @@ function App(): React.JSX.Element {
     // <LandingScreen/>
     // <SignupScreen/>
     // <LoginScreen/>
-    // <DiaryScreen/>
 
-    <NewMealScreen />
-
-    // <NavigationContainer>
-    //   <TabNavigator />
-    // </NavigationContainer>
+    <NavigationContainer>
+      <TabNavigator />
+    </NavigationContainer>
 
   )
   // const isDarkMode = useColorScheme() === 'dark';
