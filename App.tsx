@@ -37,6 +37,13 @@ import FavoriteMealCard from './src/components/FavoriteMealCard';
 import FavoriteMealsScreen from './src/screens/FavoriteMealsScreen';
 import NewMealScreen from './src/screens/NewMealScreen';
 import SearchFoodScreen from './src/screens/SearchFoodScreen';
+import NutritionScreen from './src/screens/NutritionScreen';
+
+import sampleFoodData from './src/assets/data/sample-food-data.json';
+
+import NutritionLabel from './src/components/NutritionLabel';
+
+
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -69,14 +76,36 @@ function Section({children, title}: SectionProps): React.JSX.Element {
 }
 
 function App(): React.JSX.Element {
+
+  const exampleNutritionData = {
+    servingSize: '1 medium serving (117 g)',
+    calories: 378,
+    totalFat: 18,
+    saturatedFat: 2.7,
+    transFat: 0.1,
+    cholesterol: 0, // Assuming the value is zero or not available
+    sodium: 221,
+    totalCarbohydrate: 50,
+    dietaryFiber: 4.6,
+    totalSugars: 0.2,
+    addedSugars: 0, // Assuming the value is zero or not available
+    protein: 4,
+    vitaminD: 0, // Assuming the value is zero or not available
+    calcium: 19,
+    iron: 0.51,
+    potassium: 697
+  };
+
   return (
     // <LandingScreen/>
-    // <SignupScreen/>
+    <SignupScreen/>
     // <LoginScreen/>
 
-    <NavigationContainer>
-      <TabNavigator />
-    </NavigationContainer>
+    // <NavigationContainer>
+    //   <TabNavigator />
+    // </NavigationContainer>
+
+    // <NutritionScreen foodData={sampleFoodData}/>
 
   )
   // const isDarkMode = useColorScheme() === 'dark';

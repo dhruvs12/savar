@@ -38,12 +38,12 @@ const LoginScreen = () => {
 
       <View style={styles.socialLoginContainer}>
         <TouchableOpacity style={styles.socialButton}>
-          <Text>Facebook</Text>
+          <Text>Google</Text>
           {/* Add Facebook logo and logic */}
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.socialButton}>
-          <Text>Google</Text>
+          <Text>Apple</Text>
           {/* Add Google logo and logic */}
         </TouchableOpacity>
       </View>
