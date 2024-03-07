@@ -6,6 +6,7 @@ import DiaryScreen from '../screens/DiaryScreen';
 import FavoriteMealsScreen from '../screens/FavoriteMealsScreen';
 import NewMealScreen from '../screens/NewMealScreen';
 import SearchFoodScreen from '../screens/SearchFoodScreen';
+import NutritionScreen from '../screens/NutritionScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -18,6 +19,7 @@ function DiaryStackScreen() {
       <DiaryStack.Screen name="FavoriteMeals" component={FavoriteMealsScreen} />  
       <DiaryStack.Screen name="NewMeals" component={NewMealScreen} />  
       <DiaryStack.Screen name="SearchFood" component={SearchFoodScreen} />
+      <DiaryStack.Screen name="NutritionScreen" component={NutritionScreen} />
     </DiaryStack.Navigator>
   );
 }

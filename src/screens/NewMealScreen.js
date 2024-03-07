@@ -50,6 +50,7 @@ const NewMealScreen = ({navigation}) => {
 
       <View style={styles.inputContainer}>
         <InputField style={{width:'100%'}}text="New Meal" />
+        <InputField text="Meal Type (Breakfast, Lunch, Dinner, Snack)" />
       </View>
 
 
@@ -94,11 +95,6 @@ const NewMealScreen = ({navigation}) => {
       </View>
       </View>
       
-      <View style={styles.mealTypeContainer}>
-        <Text style={styles.mealTypeLabel}>Meal Type</Text>
-        <InputField text="Meal Type" />
-      </View>
-
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.primaryButton} onPress={handleAddFood}>
           <Text style={styles.buttonText}>Add Food</Text>
@@ -136,7 +132,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     marginTop:32,
     marginBottom: 8,
-    // backgroundColor: 'yellow'
   },
   timeContainer: {
     flexDirection: 'row',
@@ -148,11 +143,12 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 10,
     alignItems:'center',
-    backgroundColor:'blue'
+    // backgroundColor:'blue'
   },
   timePickerContainer: {
-    backgroundColor:'red',
-    alignItems:'stretch'
+    // backgroundColor:'#F8F8F8',
+    alignItems:'stretch',
+    paddingHorizontal:15
   },
   startBlock: {
     marginRight: 8,

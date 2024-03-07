@@ -4,13 +4,12 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 const NutritionLabel = ({ nutritionData }) => {
 
   const formatNutrientValue = (nutrient) => {
-    if (nutrient && typeof nutrient === 'object' && nutrient.amount && nutrient.unit) {
-      return `${nutrient.amount} ${nutrient.unit}`;
+    if (nutrient && typeof nutrient === 'object') {
+      const precision = nutrient.amount === nutritionData.calories.amount ? 0 : 2;
+      return `${parseFloat(nutrient.amount).toFixed(precision)} ${nutrient.unit}`;
     }
     return nutrient || 'N/A';
   };
-
-  console.log(formatNutrientValue(nutritionData.totalSugar));
 
   const renderNutrient = (name, nutrient, isBold, isTabbed) => (
     <View style={[styles.nutrientRow, isTabbed && styles.tabbed]}>
@@ -18,6 +17,8 @@ const NutritionLabel = ({ nutritionData }) => {
       <Text style={[styles.nutrientAmount, isBold && styles.bold]}>{formatNutrientValue(nutrient)}</Text>
     </View>
   );
+
+  console.log(nutritionData.saturatedFat);
 
   return (
     <View style={styles.container}>
@@ -31,7 +32,7 @@ const NutritionLabel = ({ nutritionData }) => {
       </View>
       
       <View style={styles.divider} />
-      {renderNutrient('Total Fat',(nutritionData.totalFat), true)}
+      {renderNutrient('Total Fat',(nutritionData.totalFat), true, false)}
       {renderNutrient('Saturated Fat',(nutritionData.saturatedFat), false, true)}
       {renderNutrient('Trans Fat', (nutritionData.transFat), false, true)}
       {renderNutrient('Cholesterol', (nutritionData.cholesterol), true)}
@@ -52,7 +53,7 @@ const NutritionLabel = ({ nutritionData }) => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 20,
+    margin: 16,
     backgroundColor: '#F8F8F8',
     borderRadius: 20,
     padding: 16,
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
   nutrientRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 2,
+    paddingVertical: 4,
   },
   calorieName: {
     fontSize: 18,

@@ -98,12 +98,12 @@ function App(): React.JSX.Element {
 
   return (
     // <LandingScreen/>
-    <SignupScreen/>
+    // <SignupScreen/>
     // <LoginScreen/>
 
-    // <NavigationContainer>
-    //   <TabNavigator />
-    // </NavigationContainer>
+    <NavigationContainer>
+      <TabNavigator />
+    </NavigationContainer>
 
     // <NutritionScreen foodData={sampleFoodData}/>
 
