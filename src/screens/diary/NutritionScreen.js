@@ -20,7 +20,7 @@ import {
   getRatioFullNutrientMap
 } from '../../api/NutritionDataParser';
 
-const NutritionScreen = ({ route }) => {
+const NutritionScreen = ({ navigation, route }) => {
   const { foodData } = route.params;
 
   // Standard Size Full Nutrient Map
@@ -119,7 +119,14 @@ const NutritionScreen = ({ route }) => {
 
   // Add Food
   const handleAddFood = () => {
-    console.log('Adding food...');
+    const index = parseInt(selectedPortion.key, 10);
+    const foodToAdd = {
+      name: foodData.description, 
+      amount: portions[index].amount,
+      unit: portions[index].unit,
+      nutrientMap: nutrientMap,
+    };
+    navigation.navigate('NewMeals', { foodToAdd: foodToAdd });
   };
 
   return (
