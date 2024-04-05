@@ -27,17 +27,17 @@ import {
 
 import { NavigationContainer } from '@react-navigation/native';
 
-import LandingScreen from './src/screens/LandingScreen';
-import SignupScreen from './src/screens/SignupScreen';
-import LoginScreen from './src/screens/LoginScreen';
+import LandingScreen from './src/screens/auth/LandingScreen';
+import SignupScreen from './src/screens/auth/SignupScreen';
+import LoginScreen from './src/screens/auth/LoginScreen';
 import MealCard from './src/components/MealCard';
-import DiaryScreen from './src/screens/DiaryScreen';
+import DiaryScreen from './src/screens/diary/DiaryScreen';
 import TabNavigator from './src/navigation/TabNavigator';
 import FavoriteMealCard from './src/components/FavoriteMealCard';
-import FavoriteMealsScreen from './src/screens/FavoriteMealsScreen';
-import NewMealScreen from './src/screens/NewMealScreen';
-import SearchFoodScreen from './src/screens/SearchFoodScreen';
-import NutritionScreen from './src/screens/NutritionScreen';
+import FavoriteMealsScreen from './src/screens/diary/FavoriteMealsScreen';
+import NewMealScreen from './src/screens/diary/NewMealScreen';
+import SearchFoodScreen from './src/screens/diary/SearchFoodScreen';
+import NutritionScreen from './src/screens/diary/NutritionScreen';
 
 import sampleFoodData from './src/assets/data/sample-food-data.json';
 

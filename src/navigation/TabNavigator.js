@@ -2,11 +2,11 @@ import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import DiaryScreen from '../screens/DiaryScreen';
-import FavoriteMealsScreen from '../screens/FavoriteMealsScreen';
-import NewMealScreen from '../screens/NewMealScreen';
-import SearchFoodScreen from '../screens/SearchFoodScreen';
-import NutritionScreen from '../screens/NutritionScreen';
+import DiaryScreen from '../screens/diary/DiaryScreen';
+import FavoriteMealsScreen from '../screens/diary/FavoriteMealsScreen';
+import NewMealScreen from '../screens/diary/NewMealScreen';
+import SearchFoodScreen from '../screens/diary/SearchFoodScreen';
+import NutritionScreen from '../screens/diary/NutritionScreen';
 
 
 const Tab = createBottomTabNavigator();
