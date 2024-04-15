@@ -31,9 +31,8 @@ export const getPortions = (foodData) => {
 }
 
 export const getRatioFullNutrientMap = (standardSizeFullNutrientMap, gramWeight) => {
-    console.log(gramWeight);
+    console.log(standardSizeFullNutrientMap);
     const ratio = gramWeight / STANDARD_SERVING_SIZE;
-    console.log(ratio);
     const ratioNutrientMap = {};
 
     Object.entries(standardSizeFullNutrientMap).forEach(([nutrientId, nutrientInfo]) => {

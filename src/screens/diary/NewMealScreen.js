@@ -3,6 +3,7 @@ import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet, ScrollView} fro
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import InputField from '../../components/InputField'; // Adjust the path as needed
 import SwipeableFoodItem from '../../components/SwipeableFoodItem';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const NewMealScreen = ({ navigation, route }) => {
 
@@ -19,6 +20,11 @@ const NewMealScreen = ({ navigation, route }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isStartTimePickerVisible, setStartTimePickerVisibility] = useState(false);
   const [isEndTimePickerVisible, setEndTimePickerVisibility] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
 
   // Food Array
   const [addedFoods, setAddedFoods] = useState([]);
@@ -31,18 +37,10 @@ const NewMealScreen = ({ navigation, route }) => {
         amount: foodToAdd.amount,
         unit: foodToAdd.unit,
         nutrientMap: foodToAdd.nutrientMap,
-      };
-      console.log(newFoodItem);
+      }; 
       setAddedFoods(prevFoods => [...prevFoods, newFoodItem]);
     }
   }, [route.params]);
-
-  useEffect(() => {
-    // Set some dummy data on component mount
-    setAddedFoods([
-      { name: 'Apple', amount: 1, unit: 'piece' }, 
-    ]);
-  }, []);
 
   // BUTTON AND PICKER HANDLERS
 
@@ -92,7 +90,15 @@ const NewMealScreen = ({ navigation, route }) => {
 
   const handleCreateMeal = () => {
     // Logic to handle creating a meal
-    console.log(`Creating a meal with: ${food}, Meal: ${mealType}`);
+    const mealData = {
+      mealType: mealType,
+      date: formatDate(date), // Using the formatDate helper function to get the date in the desired format
+      startTime: formatTime(startTime), // Using the formatTime helper function to format the time
+      endTime: formatTime(endTime),
+      foods: addedFoods // This is the array of foods added to the meal
+    };
+  
+    console.log("Meal Data:", JSON.stringify(mealData, null, 2));
   };
 
   // Scrollview Handler
@@ -120,6 +126,17 @@ const NewMealScreen = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerTitle}>{food || "Enter Meal Name"}</Text>
+        <TouchableOpacity onPress={toggleFavorite} style={styles.favoriteButton}>
+          <MaterialCommunityIcons
+            name={isFavorite ? "heart" : "heart-outline"}
+            color={isFavorite ? "red" : "grey"}
+            size={24}
+          />
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.inputSection}>
         <InputField
@@ -199,6 +216,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor:'white'
   },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    flex: 1,  // Allows the text to expand and use available space, pushing the icon to the right
+  },
+  favoriteButton: {
+    padding: 10,
+  },
   inputSection: {
     width: '100%',
     padding: 20
@@ -270,6 +304,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
+  
 });
 
 export default NewMealScreen;

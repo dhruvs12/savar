@@ -7,10 +7,16 @@ import FavoriteMealsScreen from '../screens/diary/FavoriteMealsScreen';
 import NewMealScreen from '../screens/diary/NewMealScreen';
 import SearchFoodScreen from '../screens/diary/SearchFoodScreen';
 import NutritionScreen from '../screens/diary/NutritionScreen';
-
+import NutrientIntakeScreen from '../screens/health/NutrientGraphsScreen';
+import RecipeScreen from '../screens/recipe/RecipeScreen';
+import AccountScreen from '../screens/account/AccountScreen';
 
 const Tab = createBottomTabNavigator();
+
 const DiaryStack = createStackNavigator();
+const HealthStack = createStackNavigator();
+const RecipeStack = createStackNavigator();
+const AccountStack = createStackNavigator();
 
 function DiaryStackScreen() {
   return (
@@ -22,6 +28,30 @@ function DiaryStackScreen() {
       <DiaryStack.Screen name="NutritionScreen" component={NutritionScreen} />
     </DiaryStack.Navigator>
   );
+}
+
+function HealthStackScreen() {
+  return (
+    <HealthStack.Navigator screenOptions={{ headerShown: false }}>
+      <HealthStack.Screen name="NutrientIntake" component={NutrientIntakeScreen}/>
+    </HealthStack.Navigator>
+  );
+}
+
+function RecipeStackScreen() {
+  return (
+    <RecipeStack.Navigator screenOptions={{ headerShown: false }}>
+      <RecipeStack.Screen name="Recipe" component={RecipeScreen}/>
+    </RecipeStack.Navigator>
+  )
+}
+
+function AccountStackScreen() {
+  return (
+    <AccountStack.Navigator screenOptions={{ headerShown: false }}>
+      <AccountStack.Screen name="Account" component={AccountScreen}/>
+    </AccountStack.Navigator>
+  )
 }
 
 export default function TabNavigator() {
@@ -37,6 +67,37 @@ export default function TabNavigator() {
           ),
         }}
       />
+      <Tab.Screen
+        name="HealthStack"
+        component={HealthStackScreen}
+        options={{
+          tabBarLabel: 'Health',
+          tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="heart" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="RecipeStack"
+        component={RecipeStackScreen}
+        options={{
+          tabBarLabel: 'Recipe',
+          tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="chef-hat" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="AccountStack"
+        component={AccountStackScreen}
+        options={{
+          tabBarLabel: 'Account',
+          tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="account" color={color} size={size} />
+          ),
+        }}
+      />
+      
     </Tab.Navigator>
   );
 }
