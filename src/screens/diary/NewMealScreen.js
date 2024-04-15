@@ -1,18 +1,50 @@
-import React, { useState } from 'react';
-import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect} from 'react';
+import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import InputField from '../../components/InputField'; // Adjust the path as needed
+import SwipeableFoodItem from '../../components/SwipeableFoodItem';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const FoodInputScreen = ({navigation}) => {
+const NewMealScreen = ({ navigation, route }) => {
+
+  // STATES
+
+  // Mean Input
   const [food, setFood] = useState('');
   const [mealType, setMealType] = useState('');
+
+  // Date Time Input
   const [date, setDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isStartTimePickerVisible, setStartTimePickerVisibility] = useState(false);
   const [isEndTimePickerVisible, setEndTimePickerVisibility] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
 
+  // Food Array
+  const [addedFoods, setAddedFoods] = useState([]);
+
+  useEffect(() => {
+    if (route.params && route.params.foodToAdd) {
+      const foodToAdd = route.params.foodToAdd;
+      const newFoodItem = {
+        name: foodToAdd.name, 
+        amount: foodToAdd.amount,
+        unit: foodToAdd.unit,
+        nutrientMap: foodToAdd.nutrientMap,
+      }; 
+      setAddedFoods(prevFoods => [...prevFoods, newFoodItem]);
+    }
+  }, [route.params]);
+
+  // BUTTON AND PICKER HANDLERS
+
+  // Date and Time Picker Handlers
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -49,23 +81,62 @@ const FoodInputScreen = ({navigation}) => {
     hidePicker();
   };
 
+  // Button Handlers
+
   const handleAddFood = () => {
     // Logic to handle adding food
     navigation.navigate('SearchFood');
-    console.log(`Food: ${food}, Meal: ${mealType}, Date: ${date.toISOString()}, Start Time: ${startTime.toISOString()}, End Time: ${endTime.toISOString()}`);
   };
 
   const handleCreateMeal = () => {
     // Logic to handle creating a meal
-    console.log(`Creating a meal with: ${food}, Meal: ${mealType}`);
+    const mealData = {
+      mealType: mealType,
+      date: formatDate(date), // Using the formatDate helper function to get the date in the desired format
+      startTime: formatTime(startTime), // Using the formatTime helper function to format the time
+      endTime: formatTime(endTime),
+      foods: addedFoods // This is the array of foods added to the meal
+    };
+  
+    console.log("Meal Data:", JSON.stringify(mealData, null, 2));
+  };
+
+  // Scrollview Handler
+
+  const handleDeleteFood = (index) => {
+    const updatedFoods = [...addedFoods];
+    updatedFoods.splice(index, 1);
+    setAddedFoods(updatedFoods);
   };
 
   // Helper functions to format the date and time into readable strings
   const formatDate = (date) => `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
   const formatTime = (time) => `${time.getHours() % 12}:${time.getMinutes().toString().padStart(2, '0')} ${time.getHours() >= 12 ? 'PM' : 'AM'}`;
 
+  const renderFoodItem = (foodItem, index) => {
+    return (
+      <SwipeableFoodItem
+        key={index}
+        foodItem={foodItem}
+        onDelete={() => handleDeleteFood(index)}
+      />
+    );
+  };
+  
+
   return (
     <SafeAreaView style={styles.container}>
+
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerTitle}>{food || "Enter Meal Name"}</Text>
+        <TouchableOpacity onPress={toggleFavorite} style={styles.favoriteButton}>
+          <MaterialCommunityIcons
+            name={isFavorite ? "heart" : "heart-outline"}
+            color={isFavorite ? "red" : "grey"}
+            size={24}
+          />
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.inputSection}>
         <InputField
@@ -113,23 +184,54 @@ const FoodInputScreen = ({navigation}) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleAddFood}>
+        <TouchableOpacity style={[styles.button, { backgroundColor: 'green' }]} onPress={handleAddFood}>
           <Text style={styles.buttonText}>Add Food</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleCreateMeal}>
           <Text style={styles.buttonText}>Create Meal</Text>
         </TouchableOpacity>
       </View>
+
+      <ScrollView
+        style={styles.addedFoodsContainer}
+        contentContainerStyle={styles.addedFoodsContentContainer}
+      >
+        {addedFoods.length > 0 ? (
+          addedFoods.map((foodItem, index) => (
+            renderFoodItem(foodItem, index) // Use the renderFoodItem function here
+          ))
+        ) : (
+          <Text style={styles.placeholderText}>Click Add Food to Search for some foods!</Text>
+        )}
+      </ScrollView>
+
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor:'white'
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    flex: 1,  // Allows the text to expand and use available space, pushing the icon to the right
+  },
+  favoriteButton: {
+    padding: 10,
   },
   inputSection: {
     width: '100%',
@@ -171,6 +273,38 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
+  addedFoodsContainer: {
+    flex: 1,
+    paddingHorizontal: 10, // Add some horizontal padding
+    paddingVertical: 20, // Add padding to the top of the list
+    width: '100%'
+  },
+  addedFoodsContentContainer: {
+    paddingBottom: 20, // Space at the bottom of the scroll view
+  },
+  foodItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#e7e7e7',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  foodName: {
+    fontSize: 16,
+    color: '#333',
+  },
+  foodGramWeight: {
+    fontSize: 16,
+    color: '#333',
+  },
+  placeholderText: {
+    fontSize: 16,
+    color: '#aaa', // grey color for placeholder
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  
 });
 
-export default FoodInputScreen;
+export default NewMealScreen;

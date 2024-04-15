@@ -20,7 +20,7 @@ import {
   getRatioFullNutrientMap
 } from '../../api/NutritionDataParser';
 
-const NutritionScreen = ({ route }) => {
+const NutritionScreen = ({ navigation, route }) => {
   const { foodData } = route.params;
 
   // Standard Size Full Nutrient Map
@@ -34,6 +34,7 @@ const NutritionScreen = ({ route }) => {
   const [selectedPortion, setSelectedPortion] = useState({});
   const [showCustomGramInput, setShowCustomGramInput] = useState(false);
   const [customGramWeight, setCustomGramWeight] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
   // ModalSelector reference
   let modalSelectorRef = null;
@@ -119,7 +120,14 @@ const NutritionScreen = ({ route }) => {
 
   // Add Food
   const handleAddFood = () => {
-    console.log('Adding food...');
+    const index = parseInt(selectedPortion.key, 10);
+    const foodToAdd = {
+      name: foodData.description, 
+      amount: portions[index].amount,
+      unit: portions[index].unit,
+      nutrientMap: nutrientMap,
+    };
+    navigation.navigate('NewMeals', { foodToAdd: foodToAdd });
   };
 
   return (
@@ -179,6 +187,32 @@ const NutritionScreen = ({ route }) => {
         <TouchableOpacity style={styles.fullNutrientButton} onPress={handleSeeFullNutrients}>
             <Text style={styles.fullButtonText}>See Full Nutrient List</Text>
         </TouchableOpacity>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(!modalVisible)}
+        >
+
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <ScrollView>
+              {Object.values(nutrientMap).map((nutrient, index) => (
+                <Text style={styles.nutrientText} key={index}>
+                  {`${nutrient.name}: ${nutrient.amount} ${nutrient.unit}`}
+                </Text>
+              ))}
+              </ScrollView>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
 
       </ScrollView>
     </SafeAreaView>
@@ -358,13 +392,43 @@ const styles = StyleSheet.create({
     elevation: 2
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#6200ee',
   },
   textStyle: {
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center'
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  nutrientText: {
+    textAlign: 'center',
+    marginBottom: 10
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  }
 });
 
 export default NutritionScreen;
