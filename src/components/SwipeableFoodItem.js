@@ -19,7 +19,13 @@ const SwipeableFoodItem = ({ foodItem, onDelete }) => {
       containerStyle={styles.container}
     >
       <View style={styles.foodItem}>
-        <Text style={styles.foodName}>{foodItem.name}</Text>
+        <Text 
+          style={styles.foodName}
+          numberOfLines={1}
+          ellipsizeMode='tail'
+        >
+          {foodItem.name}
+          </Text>
         <Text style={styles.foodGramWeight}>{foodItem.amount} {foodItem.unit}</Text>
       </View>
     </Swipeable>
@@ -54,6 +60,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#333',
     fontWeight: '500',
+    flexShrink: 1,
+    marginRight: 4,
   },
   foodGramWeight: {
     fontSize: 16,

@@ -4,9 +4,13 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 const NutritionLabel = ({ nutritionData }) => {
 
   const formatNutrientValue = (nutrient) => {
-    if (nutrient && typeof nutrient === 'object') {
-      const precision = nutrient.amount === nutritionData.calories.amount ? 0 : 2;
-      return `${parseFloat(nutrient.amount).toFixed(precision)} ${nutrient.unit}`;
+    if (nutrient != null && typeof nutrient === 'object') {
+      if (nutritionData.calories == null) {
+        console.error('nutritionData.calories is null or undefined');
+    } else {
+        const precision = nutrient.amount === nutritionData.calories.amount ? 0 : 2;
+        return `${parseFloat(nutrient.amount).toFixed(precision)} ${nutrient.unit}`;
+    }
     }
     return nutrient || 'N/A';
   };
@@ -17,8 +21,6 @@ const NutritionLabel = ({ nutritionData }) => {
       <Text style={[styles.nutrientAmount, isBold && styles.bold]}>{formatNutrientValue(nutrient)}</Text>
     </View>
   );
-
-  console.log(nutritionData.saturatedFat);
 
   return (
     <View style={styles.container}>

@@ -45,7 +45,6 @@ const SearchFoodScreen = ({navigation}) => {
   const handlePress = async (fdcId) => {
     try {
       const foodData = await getFoodDataFromId(fdcId);
-      console.log(fdcId);
       navigation.navigate('NutritionScreen', { foodData: foodData });
     } catch (error) {
       console.error('Failed to fetch food data:', error);

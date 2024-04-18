@@ -16,9 +16,8 @@ export const getPortions = (foodData) => {
             };
         });
     } else if (foodData.servingSize && foodData.servingSizeUnit) {
-        console.log(foodData.servingSizeUnit);
         if (!(foodData.servingSizeUnit == 'g' || foodData.servingSizeUnit == 'ml' || foodData.servingSizeUnit == 'MLT')) {
-            throw new Error('Got serving size that is not gram or ml');
+            console.log('Got serving size that is not gram or ml')
         }
         return [{
             description: "Standard Serving Size",
@@ -26,12 +25,15 @@ export const getPortions = (foodData) => {
             unit: foodData.servingSizeUnit
         }];
     } else {
-        throw new Error('You found a special food');
+        return [{
+            description: "Standard Serving Size",
+            amount: STANDARD_SERVING_SIZE,
+            unit: 'g'
+        }];
     }
 }
 
 export const getRatioFullNutrientMap = (standardSizeFullNutrientMap, gramWeight) => {
-    console.log(standardSizeFullNutrientMap);
     const ratio = gramWeight / STANDARD_SERVING_SIZE;
     const ratioNutrientMap = {};
 
@@ -63,7 +65,7 @@ export const getFullNutrientMap = (foodNutrients) => {
 
 export const getCoreNutritionData = (nutrientMap) => {
     return {
-        calories: getNutrient(nutrientMap, NUTRIENT_IDS.CALORIES),
+        calories: getNutrient(nutrientMap, NUTRIENT_IDS.CALORIES, NUTRIENT_IDS.CALORIES_ATWATER),
         totalFat: getNutrient(nutrientMap, NUTRIENT_IDS.TOTAL_FAT, NUTRIENT_IDS.TOTAL_FAT_NLEA),
         saturatedFat: getNutrient(nutrientMap, NUTRIENT_IDS.SATURATED_FAT),
         transFat: getNutrient(nutrientMap, NUTRIENT_IDS.TRANS_FAT),
@@ -100,3 +102,11 @@ const getNutrient = (nutrientMap, primaryId, secondaryId=null) => {
 
 }
 
+export const calculateTotalCalories = (foods) => {
+    const totalCalories = foods.reduce((totalCalories, food) => {
+      const calories = food.nutrientMap['1008']?.amount || food.nutrientMap['2047']?.amount || 0;
+      return totalCalories + parseFloat(calories);
+    }, 0);
+  
+    return Math.round(totalCalories);
+};

@@ -4,6 +4,9 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import InputField from '../../components/InputField'; // Adjust the path as needed
 import SwipeableFoodItem from '../../components/SwipeableFoodItem';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import firestore from '@react-native-firebase/firestore';
+import { addMeal } from '../../api/FirestoreService';
+
 
 const NewMealScreen = ({ navigation, route }) => {
 
@@ -88,17 +91,42 @@ const NewMealScreen = ({ navigation, route }) => {
     navigation.navigate('SearchFood');
   };
 
-  const handleCreateMeal = () => {
+  const handleCreateMeal = async () => {
+
+    if (!food.trim()) {
+      alert('Please enter a meal name.');
+      return;
+    }
+    if (startTime >= endTime) { 
+      alert('Start time is greater than or equal to end time');
+      return;
+    }
+    if (addedFoods.length === 0) {
+      alert('Please add at least one food item.');
+      return;
+    }
+
     // Logic to handle creating a meal
     const mealData = {
+      mealName: food,
       mealType: mealType,
-      date: formatDate(date), // Using the formatDate helper function to get the date in the desired format
-      startTime: formatTime(startTime), // Using the formatTime helper function to format the time
+      date: formatDate(date), 
+      startTime: formatTime(startTime),
       endTime: formatTime(endTime),
-      foods: addedFoods // This is the array of foods added to the meal
+      foods: addedFoods 
     };
-  
-    console.log("Meal Data:", JSON.stringify(mealData, null, 2));
+
+    
+    const { success, id, error } = await addMeal(mealData);
+    if (success) {
+      console.log('Meal created with ID:', id);
+      alert('Meal created successfully!');
+      navigation.navigate('Diary');
+    } else {
+      console.error('Failed to create meal:', error);
+      alert('Failed to create meal. Our team has been alerted');
+    }
+
   };
 
   // Scrollview Handler
