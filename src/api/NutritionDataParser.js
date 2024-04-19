@@ -38,7 +38,7 @@ export const getRatioFullNutrientMap = (standardSizeFullNutrientMap, gramWeight)
     const ratioNutrientMap = {};
 
     Object.entries(standardSizeFullNutrientMap).forEach(([nutrientId, nutrientInfo]) => {
-        if (nutrientInfo.amount !== undefined) {
+        if (nutrientInfo.amount !== undefined || nutrientInfo.amount === null) {
             ratioNutrientMap[nutrientId] = {
                 ...nutrientInfo,
                 amount: parseFloat((nutrientInfo.amount * ratio))

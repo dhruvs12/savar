@@ -106,13 +106,15 @@ const NewMealScreen = ({ navigation, route }) => {
       return;
     }
 
+
+
     // Logic to handle creating a meal
     const mealData = {
       mealName: food,
       mealType: mealType,
-      date: formatDate(date), 
-      startTime: formatTime(startTime),
-      endTime: formatTime(endTime),
+      date: firestore.Timestamp.fromDate(date), 
+      startTime: firestore.Timestamp.fromDate(startTime),
+      endTime: firestore.Timestamp.fromDate(endTime),
       foods: addedFoods 
     };
 

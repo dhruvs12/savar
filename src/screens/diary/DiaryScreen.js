@@ -13,35 +13,31 @@ const DiaryScreen = ({ navigation }) => {
     setLoading(true);
     const { success, meals, error } = await fetchMeals();
     if (success) {
-      // Group by date
-      const groupedMeals = meals.reduce((acc, meal) => {
-        const date = meal.date;
-        if (!acc[date]) {
-          acc[date] = [];
-        }
-        acc[date].push(meal);
-        return acc;
-      }, {});
-
-      // Sort each group by time
-      for (const date in groupedMeals) {
-        groupedMeals[date].sort((a, b) => {
-          const timeA = new Date(`1970/01/01 ${a.startTime}`);
-          const timeB = new Date(`1970/01/01 ${b.startTime}`);
-          return timeA - timeB;
+      const groupedByDate = meals.reduce((groupedMeals, meal) => {
+        const formattedDate = meal.date.toDate().toLocaleDateString('en-US', {
+          month: '2-digit',
+          day: '2-digit',
+          year: 'numeric'
         });
+        if (!groupedMeals[formattedDate]) groupedMeals[formattedDate] = [];
+        groupedMeals[formattedDate].push(meal);
+        return groupedMeals;
+      }, {});
+  
+      for (const date in groupedByDate) {
+        groupedByDate[date].sort((mealA, mealB) => mealB.startTime.toDate() - mealA.startTime.toDate());
       }
 
-      // Convert the object into an array and sort by date
-      const sortedDateEntries = Object.entries(groupedMeals).map(([date, meals]) => ({
-        date,
-        meals
-      })).sort((a, b) => {
-        const dateA = new Date(a.date.split('/').reverse().join('-'));
-        const dateB = new Date(b.date.split('/').reverse().join('-'));
-        return dateB - dateA;
-      });
-
+      const parseDate = (dateString) => {
+        const [month, day, year] = dateString.split('/');
+        return new Date(`${year}-${month}-${day}`);
+      };      
+  
+      const sortedDateEntries = Object.entries(groupedByDate)
+        .map(([date, meals]) => ({ date, meals }))
+        .sort((a, b) => parseDate(b.date) - parseDate(a.date));
+      
+      console.log(sortedDateEntries);
       setMealData(sortedDateEntries);
     } else {
       console.error('Failed to fetch meals:', error);
@@ -76,7 +72,7 @@ const DiaryScreen = ({ navigation }) => {
                   key={meal.id}
                   mealType={meal.mealType}
                   mealName={meal.mealName}
-                  mealTime={`${meal.startTime} - ${meal.endTime}`}
+                  mealTime={`${meal.startTime.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${meal.endTime.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
                   calories={calculateTotalCalories(meal.foods)}
                 />
               ))}
