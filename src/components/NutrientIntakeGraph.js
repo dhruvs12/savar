@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import { LineChart } from 'react-native-chart-kit';
 import { View, Text, StyleSheet } from 'react-native';
 
-const NutrientIntakeGraph = ({ data }) => {
-  const [activeIndex, setActiveIndex] = useState(null); // State to track active index
-  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 }); // State to track tooltip position
+const NutrientIntakeGraph = ({ labels, datasets }) => {
+
+  console.log("DaTA\n");
+  console.log(datasets);
+
+  const [activeIndex, setActiveIndex] = useState(null);
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
 
   const chartConfig = {
     backgroundGradientFrom: '#fff',
@@ -23,7 +27,6 @@ const NutrientIntakeGraph = ({ data }) => {
   };
 
   const handleDataPointClick = (dataPoint, dataset, index) => {
-    // Adjust tooltip position
     const x = dataPoint.x;
     const y = dataPoint.y;
     setTooltipPos({ x, y });
@@ -33,9 +36,9 @@ const NutrientIntakeGraph = ({ data }) => {
   return (
     <View style={{ alignItems: 'center', justifyContent: 'center', marginVertical: 20 }}>
       <LineChart
-        data={{
-          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          datasets: [{ data }],
+       data={{
+          labels,
+          datasets,
         }}
         width={350}
         height={220}
@@ -47,12 +50,12 @@ const NutrientIntakeGraph = ({ data }) => {
           return activeIndex !== null ? (
             <View style={{
               position: 'absolute',
-              left: tooltipPos.x - 35, // Adjust based on your tooltip width
-              top: tooltipPos.y - 40, // Adjust based on your tooltip height
+              left: tooltipPos.x - 35, 
+              top: tooltipPos.y - 40,
               ...styles.tooltip
             }}>
-              <Text style={styles.tooltipText}>Date: {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][activeIndex]}</Text>
-              <Text style={styles.tooltipText}>Value: {data[activeIndex]}</Text>
+              <Text style={styles.tooltipText}>Date: {labels[activeIndex]}</Text>
+              <Text style={styles.tooltipText}>Value: {datasets[0].data[activeIndex]}</Text>
             </View>
           ) : null;
         }}

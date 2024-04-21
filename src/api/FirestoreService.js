@@ -1,4 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
+import { NUTRIENT_IDS } from '../constants/nutrientIds';
 
 function cleanNutrientMap(data) {
   const cleanedData = {};
@@ -13,8 +14,6 @@ function cleanNutrientMap(data) {
   return cleanedData;
 }
 
-
-// Function to add a meal to Firestore
 export const addMeal = async (mealData) => {
   mealData.foods.forEach(food => {
     food.nutrientMap = cleanNutrientMap(food.nutrientMap); // assuming nutrientMap is the object to be cleaned
@@ -30,7 +29,6 @@ export const addMeal = async (mealData) => {
   }
 };
 
-// Function to fetch meals from Firestore
 export const fetchMeals = async () => {
   try {
     const mealsCollection = firestore().collection('diary');
@@ -44,4 +42,58 @@ export const fetchMeals = async () => {
   }
 };
 
-// More functions can be added here for updating or deleting meals
+  export const getNutrientTotalsByDayPastWeek = async () => {
+    
+    const endDate = new Date();
+    endDate.setHours(23, 59, 59, 999);
+
+    const startDate = new Date();
+    startDate.setDate(endDate.getDate() - 6);
+    startDate.setHours(0, 0, 0, 0);
+
+    try {
+      const querySnapshot = await firestore()
+        .collection('diary')
+        .where('date', '>=', startDate)
+        .get();
+
+      const totalsByDay = {};
+
+      querySnapshot.forEach(doc => {
+        const data = doc.data();
+        const day = data.date.toDate().getDay();
+
+        // Initialize totals for each day if not already present
+        if (!totalsByDay[day]) {
+          totalsByDay[day] = Object.keys(NUTRIENT_IDS).reduce((acc, key) => {
+            acc[key] = 0;
+            return acc;
+          }, {});
+        }
+        
+        // Sum nutrients for each food item
+        data.foods.forEach(food => {
+          Object.entries(food.nutrientMap).forEach(([key, nutrientInfo]) => {
+            const nutrientId = parseInt(key);
+            const nutrientKey = Object.keys(NUTRIENT_IDS).find(key => NUTRIENT_IDS[key] === nutrientId);
+
+            if (nutrientKey && nutrientInfo.amount) {
+              totalsByDay[day][nutrientKey] += nutrientInfo.amount;
+            }
+          });
+        });
+      });
+
+      // Transform the totals into an array sorted by day of the week
+      const sortedData = Object.entries(totalsByDay).map(([day, nutrients]) => ({
+        day: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][day],
+        ...nutrients
+      }));
+
+      return sortedData;
+
+    } catch (error) {
+      console.error("Error fetching nutrient totals: ", error);
+      throw error; // Rethrow the error so you can handle it in the component
+    }
+  };
