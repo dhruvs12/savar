@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, StyleSheet, Text, SafeAreaView, TouchableOpacity} from 'react-native';
 import NutrientIntakeGraph from '../../components/NutrientIntakeGraph';
 import { getNutrientTotalsByDayPastWeek } from '../../api/FirestoreService';
-import { NUTRIENT_IDS } from '../../constants/nutrientIds';
 
-const NutrientIntakeScreen = () => {
+const NutrientIntakeScreen = ({navigation}) => {
 
   const [nutrientIntakeData, setNutrientIntakeData] = useState([]);
   

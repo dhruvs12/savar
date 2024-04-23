@@ -7,7 +7,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import firestore from '@react-native-firebase/firestore';
 import { addMeal } from '../../api/FirestoreService';
 
-
 const NewMealScreen = ({ navigation, route }) => {
 
   // STATES

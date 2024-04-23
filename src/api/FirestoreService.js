@@ -42,7 +42,7 @@ export const fetchMeals = async () => {
   }
 };
 
-  export const getNutrientTotalsByDayPastWeek = async () => {
+export const getNutrientTotalsByDayPastWeek = async () => {
     
     const endDate = new Date();
     endDate.setHours(23, 59, 59, 999);
@@ -96,4 +96,19 @@ export const fetchMeals = async () => {
       console.error("Error fetching nutrient totals: ", error);
       throw error; // Rethrow the error so you can handle it in the component
     }
-  };
+};
+
+export const fetchHealthData = async (startDate, endDate) => {
+  const healthCollection = firestore().collection('health');
+  const snapshot = await healthCollection
+    .where('date', '>=', startDate)
+    .where('date', '<=', endDate)
+    .orderBy('date')
+    .get();
+
+  const data = [];
+  snapshot.forEach(doc => {
+    data.push({ id: doc.id, ...doc.data() });
+  });
+  return data;
+};
