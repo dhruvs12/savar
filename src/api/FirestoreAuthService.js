@@ -18,13 +18,9 @@ export const signup = async (email, password) => {
   }
 };
 
-export const getUserId = () => {
+export const getCurrentUserId = () => {
   const user = auth().currentUser;
-  if (user) {
-    return user.uid;
-  } else {
-    return null;
-  }
+  return user ? user.uid : null;
 };
 
 export const isUserLoggedIn = () => {

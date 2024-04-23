@@ -68,63 +68,84 @@ const NutrientIntakeScreen = ({navigation}) => {
         />
       </View>
     ))
-  : null; // This will be the value of nutrientGraphs if nutrientIntakeData is empty
+  : null;
+
+  console.log("NUTRIENT GRAPH");
+  console.log(nutrientGraphs);
 
   const goToInsights = () => {
     navigation.navigate('InsightsScreen');
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={styles.container}>
 
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Nutrient Intake</Text>
+      </View>
 
-      <Text style={styles.headerTitle}>Nutrient Intake</Text>
-
-      {nutrientGraphs || <Text>No data available</Text>}
-
-      </ScrollView>
+      {nutrientGraphs ? (
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}
+        >
+          {nutrientGraphs}
+        </ScrollView>
+        ) :
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={styles.noDataText}>No data available</Text>
+        </View>
+      }
 
       <TouchableOpacity style={styles.floatingButton} onPress={goToInsights}>
         <Text style={styles.floatingButtonText}>View Insights</Text>
       </TouchableOpacity>
 
-    </SafeAreaView>
+  </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
+  container: {
     flex: 1,
     backgroundColor: '#fff',
   },
-  container: {
-    flex: 1,
-  },
-  contentContainer: {
-    flexGrow: 1,
+  header: {
+    padding: 15,
+    alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 20
   },
   headerTitle: {
-    fontSize: 20, 
     fontWeight: 'bold',
-    alignSelf: 'center',
-    marginBottom: 25, 
+    fontSize: 20,
+  },
+  contentContainer: {
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+  },
+  fullCenter: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noDataText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'grey',
+    textAlign: 'center',
   },
   graphContainer: {
     marginBottom: 16,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   graphTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'left', 
+    textAlign: 'left',
     marginTop: 10,
-    color: '#6200EE', 
+    color: '#6200EE',
     width: '100%',
   },
   floatingButton: {
@@ -139,13 +160,13 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
-    shadowRadius: 3.84
+    shadowRadius: 3.84,
   },
   floatingButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
-  }
+  },
 });
 
 export default NutrientIntakeScreen;
