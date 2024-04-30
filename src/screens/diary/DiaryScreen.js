@@ -37,7 +37,6 @@ const DiaryScreen = ({ navigation }) => {
         .map(([date, meals]) => ({ date, meals }))
         .sort((a, b) => parseDate(b.date) - parseDate(a.date));
       
-      console.log(sortedDateEntries);
       setMealData(sortedDateEntries);
     } else {
       console.error('Failed to fetch meals:', error);

@@ -48,7 +48,6 @@ export const fetchMeals = async () => {
     const mealsCollection = firestore().collection('diary').where('userId', '==', userId);
     const snapshot = await mealsCollection.get();
     const meals = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    console.log(meals);
     return { success: true, meals };
   } catch (error) {
     console.error('Error fetching meals from Firestore:', error);
@@ -131,4 +130,59 @@ export const fetchHealthData = async (startDate, endDate) => {
     data.push({ id: doc.id, ...doc.data() });
   });
   return data;
+};
+
+export const getFavoriteMeals = async () => {
+  const userId = getCurrentUserId();
+  if (!userId) {
+    console.error('No user logged in');
+    return []; // Return empty array if no user is logged in
+  }
+
+  try {
+    const snapshot = await firestore()
+      .collection('diary')  // Assuming 'diary' is your collection name
+      .where('userId', '==', userId)  // Filter by the current user ID
+      .where('isFavorite', '==', true)  // Filter for favorite meals
+      .get();
+
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+  } catch (error) {
+    console.error("Error fetching favorite meals:", error);
+    return []; // Return empty array on error
+  }
+};
+
+export const getDiaryNamesFromPastWeek = async () => {
+  const userId = getCurrentUserId();
+  if (!userId) {
+    console.error('No user logged in');
+    return { success: false, error: 'No user logged in' };
+  }
+
+  // Calculate the start and end dates for the past week
+  const endDate = new Date();
+  endDate.setHours(23, 59, 59, 999);
+
+  const startDate = new Date();
+  startDate.setDate(endDate.getDate() - 6);
+  startDate.setHours(0, 0, 0, 0);
+
+  try {
+    const diaryCollection = firestore().collection('diary')
+      .where('userId', '==', userId)
+      .where('date', '>=', startDate)
+      .where('date', '<=', endDate);
+
+    const snapshot = await diaryCollection.get();
+    const diaryNames = snapshot.docs.map(doc => doc.data().mealName);
+    const diary = { "diary": diaryNames };
+    return { success: true, diary };
+  } catch (error) {
+    console.error('Error fetching diary names from the past week:', error);
+    return { success: false, error };
+  }
 };

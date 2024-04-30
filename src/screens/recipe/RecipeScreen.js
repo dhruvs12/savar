@@ -1,102 +1,169 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TextInput, FlatList, Image, TouchableOpacity, SafeAreaView, Alert} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import AppleHealthKit from 'react-native-health';
-import Axios from 'axios';
-
-const healthKitOptions = {
-  permissions: {
-    read: [AppleHealthKit.Constants.Permissions.DietaryEnergyConsumed],
-    write: []
-  },
-};
-
-const APP_ID = "89467cf5";
-const APP_KEY = "3e6786aaf09b0d7c07ec39a962ab08e5";
-
-const categories = [
-  { key: 'salads', label: 'Healthy Salads', image: require('../../assets/salad.jpg') },
-  { key: 'quick', label: 'Quick and Easy', image: require('../../assets/quick.jpg') },
-  { key: 'flavors', label: 'International Flavors', image: require('../../assets/flavors.jpg') },
-  { key: 'treats', label: 'Decadent Treats', image: require('../../assets/treats.jpg') },
-];
+import { StyleSheet, View, Text, Linking, FlatList, Image, TouchableOpacity, SafeAreaView, Modal, ScrollView, ActivityIndicator} from 'react-native';
+import InputField from '../../components/InputField';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import RecipeCard from '../../components/RecipeCard';
+import Swiper from 'react-native-swiper';
+import { fetchRecipes, fetchRecipesFromDiaryEntries} from '../../api/DiscoverRecipeService';
 
 const RecipeScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [recipeCards, setRecipeCards] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    AppleHealthKit.initHealthKit(healthKitOptions, (error) => {
-      if (error) {
-        console.error("Error initializing Health kit: ", error);
-        return;
+    const initializeRecipes = async () => {
+      const recipes = await fetchRecipesFromDiaryEntries();
+      if (recipes) {
+        setRecipeCards(recipes);
       }
-      fetchNutritionalData();
-    });
-  }, []);
-
-  const fetchNutritionalData = () => {
-    let startDate = new Date();
-    startDate.setMonth(startDate.getMonth() - 1); // Fetch data from the last month
-    const options = {
-      startDate: startDate.toISOString(),
-      endDate: (new Date()).toISOString(),
     };
 
-    AppleHealthKit.getDailyDietaryEnergySamples(options, (err, results) => {
-      if (err) {
-        console.error("Error fetching Dietary Energy Samples: ", err);
-        return;
-      }
-      // Assume the first result is the latest one
-      const lastEntry = results[0];
-      const calories = lastEntry ? lastEntry.value : 2000; // Default to 2000 calories if no data
-      fetchRecipes(calories < 1800 ? 'low calorie' : 'high protein'); // Simplified logic
-    });
-  };
+    initializeRecipes();
+  }, []);
 
-  const fetchRecipes = async (nutritionNeeds) => {
-    try {
-      const response = await Axios.get(`https://api.edamam.com/search?q=${nutritionNeeds}&app_id=${APP_ID}&app_key=${APP_KEY}&to=10`);
-      setRecipes(response.data.hits);
-    } catch (error) {
-      console.error('Error fetching recipes:', error);
+  const handleSearch = async () => {
+    if (searchQuery !== '') {
+      const foundRecipes = await fetchRecipes(searchQuery);
+      setRecipes(foundRecipes);
     }
   };
 
-  const handleSearch = () => {
-    fetchRecipes(searchQuery);
+  const krabbyPattyRecipe = {
+    title: "Krabby Patty",
+    ingredients: [
+        "1 Krabby Patty bun",
+        "1 Krabby Patty patty",
+        "1 slice cheddar cheese",
+        "2 slices tomato",
+        "Lettuce leaves",
+        "Pickles",
+        "1/4 cup secret sauce",
+        "1/4 cup chopped onions",
+        "1/4 cup shredded lettuce",
+        "1/4 cup chopped tomatoes",
+        "1/4 cup chopped pickles",
+        "1/4 cup mustard",
+        "1/4 cup ketchup",
+        "Salt and pepper to taste"
+    ],
+    instructions: "1. Cook the Krabby Patty patty until it's well-done.\n2. Toast the Krabby Patty bun until golden brown.\n3. Place the cooked patty on the bottom half of the bun.\n4. Layer with cheddar cheese, tomato slices, lettuce leaves, and pickles.\n5. In a small bowl, mix secret sauce, chopped onions, shredded lettuce, chopped tomatoes, chopped pickles, mustard, ketchup, salt, and pepper.\n6. Spread the sauce mixture on the top half of the bun.\n7. Close the burger and serve hot."
+};
+
+  const viewRecipeDetails = (recipe) => {
+    setSelectedRecipe(recipe);
+    setModalVisible(true);
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Discover new recipes</Text>
-        <Icon name="search" size={24} color="#000" onPress={handleSearch} />
+        <Text style={styles.headerTitle}>Discover Recipes!</Text>
+        <View style={styles.inputContainer}>
+          <InputField
+            style={styles.searchInput}
+            text="Search for a recipe"
+            value={searchQuery}
+            onChangeText={text => setSearchQuery(text)}
+            onSubmitEditing={handleSearch}
+          />
+          <TouchableOpacity onPress={handleSearch}>
+            <MaterialCommunityIcons name="magnify" size={24} color="#8b8b8b" style={styles.searchIcon} />
+          </TouchableOpacity>
+        </View>
       </View>
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Search for a recipe"
-        value={searchQuery}
-        onChangeText={text => setSearchQuery(text)}
-        onSubmitEditing={handleSearch}
-      />
-      <FlatList
-        data={recipes.length > 0 ? recipes : categories}
-        renderItem={({ item }) => item.recipe ? (
-          <TouchableOpacity style={styles.categoryCard} onPress={() => Alert.alert(item.recipe.label)}>
-            <Image source={{ uri: item.recipe.image }} style={styles.categoryImage} />
-            <Text style={styles.categoryLabel}>{item.recipe.label}</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={styles.categoryCard}>
-            <Image source={item.image} style={styles.categoryImage} />
-            <Text style={styles.categoryLabel}>{item.label}</Text>
-          </TouchableOpacity>
-        )}
+
+      {recipes.length != 0 ? (
+        <FlatList
+          data={recipes}
+          renderItem={({ item }) => {
+            return item.recipe && item.recipe.image ? (
+              <TouchableOpacity
+                style={styles.categoryCard}
+                onPress={() => viewRecipeDetails(item.recipe)}
+              >
+                <Image
+                  source={{ uri: item.recipe.image }}
+                  style={styles.categoryImage}
+                />
+                <Text style={styles.categoryLabel}>{item.recipe.label}</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={styles.categoryCard}>
+              <Image source={item.image} style={styles.categoryImage} />
+              <Text style={styles.categoryLabel}>{item.label}</Text>
+            </TouchableOpacity>
+          );
+        }}
         numColumns={2}
-        keyExtractor={(item, index) => item.recipe ? item.recipe.uri : item.key}
-      />
+        keyExtractor={(item, index) =>
+          item.recipe ? item.recipe.uri : item.key
+        }
+        />
+      ) : (
+        <Swiper 
+          style={styles.wrapper} 
+          showsPagination={false}
+          loop={false}>
+          {recipeCards.length === 0 ? ( 
+            <View style={styles.slide}>
+              <ActivityIndicator size="large" color="#6200ee" />
+              <ScrollView>
+                <RecipeCard recipe={krabbyPattyRecipe} />
+              </ScrollView>
+            </View>
+            ) : (
+              recipeCards.map((recipe, index) => (
+                <View key={index} style={styles.slide}>
+                  <ScrollView>
+                    <RecipeCard recipe={recipe} />
+                  </ScrollView>
+                </View>
+              ))
+            )}
+        </Swiper>
+      )}
+
+      {selectedRecipe && (
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <TouchableOpacity
+            style={styles.backdrop}
+            activeOpacity={1}
+            onPress={() => setModalVisible(false)}
+          />
+          <View style={styles.modalView}>
+          <ScrollView>
+            <Text style={styles.modalTitle}>{selectedRecipe.label}</Text>
+            <Image
+              source={{ uri: selectedRecipe.image }}
+              style={styles.modalImage}
+            />
+          </ScrollView>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => Linking.openURL(selectedRecipe.url)}
+            >
+              <Text style={styles.modalButtonText}>View Full Recipe</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.modalButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    )}
+      
     </SafeAreaView>
   );
 };
@@ -107,46 +174,114 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    padding: 15,
     alignItems: 'center',
-    padding: 16,
+    justifyContent: 'center',
   },
-  headerText: {
-    fontSize: 24,
+  headerTitle: {
     fontWeight: 'bold',
+    fontSize: 20,
+    marginBottom: 15,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 11,
+    width: '100%',
+    paddingHorizontal: 15,
   },
   searchInput: {
+    flex: 1,
     height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 20,
-    borderColor: '#ccc',
+    paddingHorizontal: 10,
+  },
+  searchIcon: {
+    marginLeft: 10,
+    marginBottom: 5
   },
   categoryCard: {
     flex: 1,
     margin: 8,
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
     elevation: 3,
   },
   categoryImage: {
-    width: '100%',
+    width: "100%",
     height: 150,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   categoryLabel: {
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     padding: 8,
   },
-  bottomNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    borderTopWidth: 1,
-    borderTopColor: '#ccc',
-    paddingVertical: 10,
+  modalView: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 20,
+    paddingTop: 40,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 7,
+    marginHorizontal: 10,
+    marginTop: '20%',
+    marginBottom: '20%'
+  },
+  modalTitle: {
+    fontSize: 26,
+    fontWeight: "bold",
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#333333'
+  },
+  modalImage: {
+    width: '100%',
+    height: 200,
+    resizeMode: "cover",
+    marginBottom: 20,
+    borderRadius: 10
+  },
+  modalIngredientsTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    alignSelf: "flex-start",
+    marginBottom: 15,
+    color: '#333333'
+  },
+  modalIngredientText: {
+    fontSize: 16,
+    color: "#555",
+    marginBottom: 5,
+    textAlign: 'left',
+    width: '100%'
+  },
+  modalButton: {
+    backgroundColor: "#6200ee",
+    padding: 12,
+    borderRadius: 25,
+    marginVertical: 10,
+    alignSelf: 'stretch',
+    alignItems: 'center',
+  },
+  modalButtonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  backdrop: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)'
   },
 });
 

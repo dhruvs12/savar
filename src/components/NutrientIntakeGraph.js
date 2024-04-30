@@ -4,9 +4,6 @@ import { View, Text, StyleSheet } from 'react-native';
 
 const NutrientIntakeGraph = ({ labels, datasets }) => {
 
-  console.log("DaTA\n");
-  console.log(datasets);
-
   const [activeIndex, setActiveIndex] = useState(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
 

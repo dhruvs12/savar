@@ -70,9 +70,6 @@ const NutrientIntakeScreen = ({navigation}) => {
     ))
   : null;
 
-  console.log("NUTRIENT GRAPH");
-  console.log(nutrientGraphs);
-
   const goToInsights = () => {
     navigation.navigate('InsightsScreen');
   };

@@ -105,8 +105,6 @@ const NewMealScreen = ({ navigation, route }) => {
       return;
     }
 
-
-
     // Logic to handle creating a meal
     const mealData = {
       mealName: food,
@@ -114,7 +112,8 @@ const NewMealScreen = ({ navigation, route }) => {
       date: firestore.Timestamp.fromDate(date), 
       startTime: firestore.Timestamp.fromDate(startTime),
       endTime: firestore.Timestamp.fromDate(endTime),
-      foods: addedFoods 
+      foods: addedFoods,
+      isFavorite: isFavorite
     };
 
     
