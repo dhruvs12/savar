@@ -1,23 +1,24 @@
-# Ignore everything in the root except the src directory
-/*
+# # Ignore everything in the root except the src directory
+# /*
 
-# Except for the src directory
-!/src
+# # Except for the src directory
+# !/src
 
-# Explicitly ignore other directories you do not want to exclude
-/.expo
-/node_modules
-/ios
-/android
-/vendor
+# # Explicitly ignore other directories you do not want to exclude
+# /.expo
+# /node_modules
+# /ios
+# /android
+# /vendor
 
-# Ignore specific files in the root directory
-/*.lock
-/*.json
-/*.js
-/*.md
-/*.ts
-/*.tsx
+# # Ignore specific files in the root directory
+# /*.lock
+# /*.json
+# /*.js
+# /*.md
+# /*.ts
+# /*.tsx
 
 # However, do not ignore the .gitignore file itself!
 !.gitignore
+node_modules
