@@ -1,79 +1,78 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Savar: React Native App for Recipe Recommendations
 
-# Getting Started
+## Table of Contents
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Dependencies](#dependencies)
+- [Configuration](#configuration)
+- [Documentation](#documentation)
+- [Examples](#examples)
+- [Troubleshooting](#troubleshooting)
+- [Contributors](#contributors)
+- [License](#license)
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Introduction
+Savar is a React Native application designed to provide recipe recommendations. Utilizing APIs and integrating ChatGPT, the app offers personalized culinary suggestions, enhancing the user experience.
 
-## Step 1: Start the Metro Server
+## Features
+- **Recipe Recommendations**: Personalized recipes powered by OpenAI.
+- **Platform Compatibility**: Runs on both iOS and Android devices.
+- **API Integration**: Connects with various food and recipe APIs for dynamic content, including FoodData Central and Edamam.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## Installation
+To get started with Savar, clone the repository and install the necessary dependencies:
+git clone [https://github.com/alavu523/savar.git]
+cd savar-main
+npm install
 
-To start Metro, run the following command from the _root_ of your React Native project:
-
-```bash
-# using npm
-npm start
-
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
-```bash
-# using npm
+## Usage
+### Running the Application
+#### For Android
 npm run android
+This command starts the application on a connected Android device or emulator.
 
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
+#### For iOS
 npm run ios
+This command starts the application on a connected Android device or emulator.
 
-# OR using Yarn
-yarn ios
-```
+# Development Setup
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+Ensure your development environment is set up for React Native development by following React Native - Environment Setup.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+## Dependencies
 
-## Step 3: Modifying your App
+The project relies on several key dependencies:
 
-Now that you have successfully run the app, let's modify it.
+- `react-native`: Framework for building native applications using React.
+- `@react-native-community/cli`: Toolset for React Native CLI operations.
+- External APIs for recipe data.
+- ChatGPT for generating dynamic recipe recommendations.
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+## Configuration
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+Ensure you configure the necessary environment variables and API keys in your project settings to connect with external APIs and services.
 
-## Congratulations! :tada:
+## Documentation
 
-You've successfully run and modified your React Native App. :partying_face:
+Further documentation can be found at:
 
-### Now what?
+- [React Native Documentation](https://reactnative.dev/docs)
+- Edamam API Documentation ((https://developer.edamam.com/edamam-docs-recipe-api))
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+## Examples
 
-# Troubleshooting
+Here are some basic examples of how to utilize the app:
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+- **Launching the App:** Follow the installation and usage guides to get the app running on your device.
+- **Using Recipe Recommendations:** Navigate to the recipes section to receive personalized recommendations.
 
-# Learn More
+## Troubleshooting
 
-To learn more about React Native, take a look at the following resources:
+If you encounter issues during the installation or running of the app, please refer to the React Native Troubleshooting Guide.
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## Contributors
+
+- Akash Lavu
+- Dhruv Singh
