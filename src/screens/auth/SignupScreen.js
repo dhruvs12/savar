@@ -1,59 +1,56 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TextInput, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, Alert} from 'react-native';
 import InputField from '../../components/InputField';
+import { signup } from '../../api/FirestoreAuthService';
 
-const SignupScreen = () => {
+const SignupScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
 
-  // Function to handle the signup logic
-  const handleSignup = () => {
-    // Implement your signup logic here
-    console.log('Signing up with', username, password);
+  const handleSignup = async () => {
+    if (password !== repeatPassword) {
+      Alert.alert('Passwords Do Not Match', 'Ensure you are inputting the right password!');
+      return;
+    }
+
+    try {
+      await signup(username, password);
+      Alert.alert('Success', 'Created Account and Logged In');
+    } catch (error) {
+      console.error('Error creating user:', error);
+      if (error.code === 'auth/email-already-in-use') {
+        Alert.alert('Error', 'The email address is already in use by another account.');
+      } else if (error.code === 'auth/invalid-email') {
+        Alert.alert('Error', 'Invalid email');
+      } else {
+        // Handle other errors here
+      }
+    }
+  };
+
+  const handleLogin = () => {
+    navigation.navigate("Login");
   };
 
   return (
     <View style={styles.container}>
-
-        <Image
-            style={styles.logo}
-            source={require('../assets/signup-default-image.jpeg')}
-        />
-        
-        <Text style={styles.header}>Create an Account</Text>
-
-        <View style={styles.inputContainer}>
-            <InputField style={{width:'100%'}} text="Username" onChangeText={setUsername} value={username} />
-            <InputField style={{width:'100%'}} text="Password" onChangeText={setPassword} value={password} secureTextEntry />
-            <InputField style={{width:'100%'}} text="Repeat Password" onChangeText={setRepeatPassword} value={repeatPassword} secureTextEntry />
-        </View>
-
+      <Image
+        style={styles.logo}
+        source={require('../../assets/signup-default-image.jpeg')}
+      />
+      <Text style={styles.header}>Create an Account</Text>
+      <View style={styles.inputContainer}>
+        <InputField style={{ width: '100%' }} text="Email" onChangeText={setUsername} value={username} />
+        <InputField style={{ width: '100%' }} text="Password" onChangeText={setPassword} value={password} secureTextEntry />
+        <InputField style={{ width: '100%' }} text="Repeat Password" onChangeText={setRepeatPassword} value={repeatPassword} secureTextEntry />
+      </View>
       <TouchableOpacity style={styles.button} onPress={handleSignup}>
         <Text style={styles.buttonText}>Sign up</Text>
       </TouchableOpacity>
-
-      <View style={styles.rememberMeContainer}>
-        <Text style={styles.rememberMeText}>Login</Text>
-        {/* Implement the Remember Me functionality */}
-      </View>
-
-      <View style={styles.divider} />
-
-      <View style={styles.socialLoginContainer}>
-
-        <TouchableOpacity style={styles.socialButton}>
-          <Text>Google</Text>
-          {/* Add Google logo and logic */}
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.socialButton}>
-          <Text>Apple</Text>
-          {/* Add Apple logo and logic */}
-        </TouchableOpacity>
-
-      </View>
-
+      <TouchableOpacity onPress={handleLogin}>
+        <Text style={styles.haveAccountText}>Have an account? <Text style={styles.loginLink}>Login</Text></Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -64,6 +61,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+    backgroundColor: 'white'
   },
   header: {
     fontSize: 24,
@@ -74,7 +72,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginBottom: 20,
-    borderRadius:100
+    borderRadius: 100
   },
   inputContainer: {
     alignItems: 'center',
@@ -92,35 +90,14 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
-  rememberMeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 10,
+  haveAccountText: {
+    marginTop: 20,
+    textAlign: 'center',
+    fontSize: 16,
   },
-  rememberMeText: {
-    marginLeft: 5,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: 'lightgrey',
-    width: '100%',
-    marginVertical: 20,
-  },
-  socialLoginContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-  },
-  socialButton: {
-    alignItems: 'center',
-    flex:1,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: 'grey',
-    borderRadius: 25,
-    marginHorizontal: 10
+  loginLink: {
+    color: '#6200ee',
+    textDecorationLine: 'underline',
   },
 });
 

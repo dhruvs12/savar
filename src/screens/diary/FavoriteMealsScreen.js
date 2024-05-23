@@ -1,31 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import FavoriteMealCard from '../../components/FavoriteMealCard';
-
+import { getFavoriteMeals } from '../../api/FirestoreService';
 const FavoriteMealsScreen = ({navigation}) => {
+
+  const [favoriteMeals, setFavoriteMeals] = useState([]);
+
+  useEffect(() => {
+    // Fetch favorite meals when the component mounts
+    fetchFavoriteMeals();
+  }, []);
+
+  const fetchFavoriteMeals = async () => {
+    try {
+      const meals = await getFavoriteMeals();
+      setFavoriteMeals(meals);
+    } catch (error) {
+      console.error('Error fetching favorite meals:', error);
+    }
+  };
   
   const handleCreateNewMeal = () => {
     navigation.navigate('NewMeals');
   };
-
-  // Example data - replace this with your actual data fetching mechanism
-  const mealOptions = [
-    {
-      id: 1,
-      title: 'Strawberry Mango Smoothie',
-      subtitle: 'Breakfast',
-      actionText: 'Add',
-      iconName: 'silverware-fork-knife',
-    },
-    {
-      id: 2,
-      title: "Mom's Chicken Curry",
-      subtitle: 'Dinner',
-      actionText: 'Add',
-      iconName: 'food-apple',
-    },
-    // Add more meal options here...
-  ];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -34,15 +31,14 @@ const FavoriteMealsScreen = ({navigation}) => {
         <Text style={styles.headerTitle}>Favorite Meals</Text>
       </View>
 
-      {/* Content Section */}
       <ScrollView style={styles.scrollView}>
-        {mealOptions.map((meal) => (
+        {favoriteMeals.map((meal) => (
           <FavoriteMealCard
             key={meal.id}
-            title={meal.title}
-            subtitle={meal.subtitle}
-            actionText={meal.actionText}
-            iconName={meal.iconName}
+            title={meal.mealName}
+            subtitle={meal.mealType}
+            actionText={"Add"}
+            iconName={'silverware-fork-knife'}
             onActionPress={() => {
               // Define what happens when you press a meal card
             }}

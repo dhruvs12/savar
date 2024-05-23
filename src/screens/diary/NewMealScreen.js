@@ -7,7 +7,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import firestore from '@react-native-firebase/firestore';
 import { addMeal } from '../../api/FirestoreService';
 
-
 const NewMealScreen = ({ navigation, route }) => {
 
   // STATES
@@ -106,8 +105,6 @@ const NewMealScreen = ({ navigation, route }) => {
       return;
     }
 
-
-
     // Logic to handle creating a meal
     const mealData = {
       mealName: food,
@@ -115,7 +112,8 @@ const NewMealScreen = ({ navigation, route }) => {
       date: firestore.Timestamp.fromDate(date), 
       startTime: firestore.Timestamp.fromDate(startTime),
       endTime: firestore.Timestamp.fromDate(endTime),
-      foods: addedFoods 
+      foods: addedFoods,
+      isFavorite: isFavorite
     };
 
     

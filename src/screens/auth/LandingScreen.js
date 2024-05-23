@@ -2,7 +2,12 @@
 import React from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
-const MealTrackerScreen = () => {
+const LandingScreen = ({navigation}) => {
+
+  const handleStartTracking = () => {
+    navigation.navigate('Login');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
 
@@ -13,7 +18,7 @@ const MealTrackerScreen = () => {
       <View style={styles.card}>
 
         <View style={styles.imageContainer}>
-          <Image source={require('../assets/landing-food-image.png')} style={styles.image} />
+          <Image source={require('../../assets/landing-food-image.png')} style={styles.image} />
         </View>
 
         <Text style={styles.title}>Sync your food and health</Text>
@@ -30,10 +35,6 @@ const MealTrackerScreen = () => {
 
     </SafeAreaView>
   );
-};
-
-const handleStartTracking = () => {
-  // Implement what happens when the user presses the 'Start tracking' button
 };
 
 const styles = StyleSheet.create({
@@ -93,4 +94,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default MealTrackerScreen;
+export default LandingScreen;

@@ -10,6 +10,7 @@ import NutritionScreen from '../screens/diary/NutritionScreen';
 import NutrientIntakeScreen from '../screens/health/NutrientGraphsScreen';
 import RecipeScreen from '../screens/recipe/RecipeScreen';
 import AccountScreen from '../screens/account/AccountScreen';
+import InsightsScreen from '../screens/health/InsightsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,6 +35,7 @@ function HealthStackScreen() {
   return (
     <HealthStack.Navigator screenOptions={{ headerShown: false }}>
       <HealthStack.Screen name="NutrientIntake" component={NutrientIntakeScreen}/>
+      <HealthStack.Screen name="InsightsScreen" component={InsightsScreen}/>
     </HealthStack.Navigator>
   );
 }
@@ -58,8 +60,8 @@ export default function TabNavigator() {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
-        name="DiaryStack" // This is the name used in the navigator
-        component={DiaryStackScreen} // This now points to the stack navigator
+        name="DiaryStack" 
+        component={DiaryStackScreen}
         options={{
           tabBarLabel: 'Diary',
           tabBarIcon: ({ color, size }) => (

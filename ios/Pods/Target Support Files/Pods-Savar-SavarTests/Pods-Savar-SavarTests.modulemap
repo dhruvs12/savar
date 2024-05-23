@@ -1,0 +1,6 @@
+framework module Pods_Savar_SavarTests {
+  umbrella header "Pods-Savar-SavarTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

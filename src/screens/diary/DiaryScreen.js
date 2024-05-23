@@ -37,7 +37,6 @@ const DiaryScreen = ({ navigation }) => {
         .map(([date, meals]) => ({ date, meals }))
         .sort((a, b) => parseDate(b.date) - parseDate(a.date));
       
-      console.log(sortedDateEntries);
       setMealData(sortedDateEntries);
     } else {
       console.error('Failed to fetch meals:', error);
@@ -80,7 +79,9 @@ const DiaryScreen = ({ navigation }) => {
           ))}
         </ScrollView>
       ) : (
-        <Text>No meals have been logged!</Text>
+        <View style={styles.noMealsContainer}>
+          <Text style={styles.noMealsText}>No meals have been logged!</Text>
+        </View>
       )}
       <TouchableOpacity style={styles.newEntryButton} onPress={onNewEntryPress}>
         <Text style={styles.newEntryButtonText}>New Entry</Text>
@@ -132,7 +133,18 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-  }
+  },
+  noMealsText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'grey',
+    textAlign: 'center'
+  },
+  noMealsContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default DiaryScreen;
